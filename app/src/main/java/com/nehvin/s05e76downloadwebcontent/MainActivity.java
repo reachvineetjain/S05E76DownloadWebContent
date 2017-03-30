@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
                     result += current;
                     data = reader.read();
                 }
+                return result;
+
             } catch (IOException e) {
                 e.printStackTrace();
+                return "failed";
             }
-            return result;
         }
     }
 
@@ -51,13 +54,18 @@ public class MainActivity extends AppCompatActivity {
         String result = null;
 
         try {
-            result = task.execute("https://www.google.co.in/").get();
+            result = task.execute("https://www.google.co.in").get();
+//            result = task.execute("216.58.199.131").get();
+//            result = task.execute("https://216.58.199.131/").get();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        TextView txt = (TextView)findViewById(R.id.txtView);
+        txt.setText(result);
         Log.i("Contents of URL", result);
     }
 }
