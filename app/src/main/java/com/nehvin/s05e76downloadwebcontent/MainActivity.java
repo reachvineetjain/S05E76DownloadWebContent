@@ -22,13 +22,14 @@ public class MainActivity extends AppCompatActivity {
             String result = "";
             URL url;
             HttpsURLConnection urlConnection = null;
-
+            InputStream in = null;
+            InputStreamReader reader=null;
             try {
                 Log.i("URL to be accessed", params[0]);
                 url = new URL(params[0]);
                 urlConnection = (HttpsURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
+                in = urlConnection.getInputStream();
+                reader = new InputStreamReader(in);
                 int data = reader.read();
                 while (data != -1) {
                     char current = (char) data;
@@ -40,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 return "failed";
+            }
+            finally {
+                try {
+                    if(in != null)
+                        in.close();
+                    if(reader != null)
+                        reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -54,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         String result = null;
 
         try {
-            result = task.execute("https://www.google.co.in").get();
+            result = task.execute("https://www.ecowebhosting.co.uk").get();
 //            result = task.execute("216.58.199.131").get();
 //            result = task.execute("https://216.58.199.131/").get();
 
